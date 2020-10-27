@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  api:
+    build: .
+    env_file: .env
+    volumes:
+      - .:/app
+    ports:
+      - 5300:3000
+
+  db:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./docker/db/mongodata:/data/db
