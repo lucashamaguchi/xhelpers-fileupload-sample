@@ -86,6 +86,9 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     cert-manager.io/issue-temporary-certificate: "$CERT_MANAGER_ISSUE_TEMPORARY_CERTICATE"  # temporary cert required for nginx to be able to reload
     acme.cert-manager.io/http01-edit-in-place: "$INGRESS_EDIT_IN_PLACE"  # important to merge with existing ingress resource into a single nginx config file
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.org/client-max-body-size: "100m"
 spec:
   tls:
   - hosts:
