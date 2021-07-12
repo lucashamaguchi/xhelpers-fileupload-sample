@@ -107,6 +107,7 @@ export default class FileUploadService {
     try {
       await s3.headObject(params).promise();
     } catch (err) {
+      console.log(err)
       if (err.code === "NotFound") throw Boom.notFound("file does not exist")
       return
     }
