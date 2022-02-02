@@ -75,20 +75,17 @@ spec:
 ---
 
 # dns
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: $K8S_NAMESPACE
-  name: $SERVICE_NAME_TAG 
+  name: $SERVICE_NAME_TAG
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     cert-manager.io/issue-temporary-certificate: "$CERT_MANAGER_ISSUE_TEMPORARY_CERTICATE"  # temporary cert required for nginx to be able to reload
     acme.cert-manager.io/http01-edit-in-place: "$INGRESS_EDIT_IN_PLACE"  # important to merge with existing ingress resource into a single nginx config file
-    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    ingress.kubernetes.io/proxy-body-size: "100m"
-    nginx.org/client-max-body-size: "100m"
 spec:
   tls:
   - hosts:
@@ -98,6 +95,10 @@ spec:
   - host: $SERVICE_URL
     http:
       paths:
-      - backend:
-          serviceName: $SERVICE_NAME
-          servicePort: 80
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: $SERVICE_NAME
+            port:
+              number: 80
